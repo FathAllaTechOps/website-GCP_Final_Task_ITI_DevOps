@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-service
+  name: website-service
 spec:
   selector:
-    app: nginx
+    app: website
   ports:
     - protocol: TCP
       port: 80

@@ -12,7 +12,7 @@
 * CSS
 
 ## Setup local
-$ docker build -t <Your Image Name > .
+$ docker build -t "Your Image Name " .
 $ docker run -p 80:80 <Your Image Name >
   
 ## Setup on Kubernates using jenkins pipeline with help of Jenkinsfile

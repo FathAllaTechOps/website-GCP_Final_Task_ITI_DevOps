@@ -2,9 +2,10 @@ pipeline {
     agent { label 'slave' }
     environment {
     GCLOUD=credentials('gcloud')
+    CONFIG=credentials('kubernetes')
     }
     stages {
-        stage('build') {
+        stage('Docker') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "dockerhub" , usernameVariable: 'USER' , passwordVariable: 'PASS')]){
@@ -18,10 +19,8 @@ pipeline {
                 }
             }
         }
-        stage('deploy') {
+        stage('Deployment') {
             steps {
-                script {
-                      withCredentials([file(credentialsId: "kubernetes" , variable: 'CONFIG' )]){
                         sh """
                            export BUILD_NUMBER=\$(cat ../build.txt)
                            cat Deployment/Website_deployment.yml | envsubst > Deployment/Website_deployment.tmp
@@ -30,8 +29,6 @@ pipeline {
                            gcloud container clusters get-credentials primary --zone us-central1-a --project first-project-2030
                            kubectl apply -f Deployment --kubeconfig=${CONFIG}
                            """
-                      }
-                }
             }
         }
     }
